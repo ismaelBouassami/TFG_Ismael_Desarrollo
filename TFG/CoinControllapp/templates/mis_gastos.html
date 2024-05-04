@@ -1,112 +1,29 @@
 {% extends 'base.html' %} {% block content %}
+<style>
+    /* Estilo adicional para los botones */
+    .boton-grande {
+      width: 100%;
+      height: 60vh; 
+      font-size: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+  </style>
 
-<div class="container">
+<div class="container-fluid">
     <h1 class="mt-4 mb-4 text-center">Mis Gastos</h1>
-
-    <div class="text-center mb-3">
-        <button id="toggleFormBtn" class="btn btn-primary">Filtrar por rango fecha</button>
-        <button id="toggleFormBtn2" class="btn btn-primary">Filtrar por mes</button>
-        <button id="toggleFormBtn3" class="btn btn-primary">Filtrar por año</button>
-    </div>
-
-    <!-- Formulario de filtrado por rango de  fecha -->
-    <form id="filterForm" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_rango_fecha' %}"
-        class="mb-4">
-        <div class="form-row">
-            <div class="col">
-                <label for="fecha_inicio">Fecha de inicio:</label>
-                <input type="date" id="fecha_inicio" name="fecha_inicio" required class="form-control">
-            </div>
-            <div class="col">
-                <label for="fecha_fin">Fecha de fin:</label>
-                <input type="date" id="fecha_fin" required name="fecha_fin" class="form-control">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-            </div>
-        </div>
-    </form>
-    <!-- Formulario de filtrado por rango de  fecha -->
-    <form id="filterForm2" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_mes' %}" class="mb-4">
-        <div class="form-row mt-3">
-            <div class="row-cols-3">
-                <label for="filtro_mes" style="font-weight: bold;">Filtrar por mes:</label>
-                <select id="filtro_mes" name="filtro_mes" required>
-                    <!--   <option value="">Todos los meses</option>-->
-                    <option value="1">Enero</option>
-                    <option value="2">Febrero</option>
-                    <option value="3">Marzo</option>
-                    <option value="4">Abril</option>
-                    <option value="5">Mayo</option>
-                    <option value="6">Junio</option>
-                    <option value="7">Julio</option>
-                    <option value="8">Agosto</option>
-                    <option value="9">Septiembre</option>
-                    <option value="10">Octubre</option>
-                    <option value="11">Noviembre</option>
-                    <option value="12">Diciembre</option>
-
-                    <!-- Añade las opciones para los demás meses -->
-                </select>
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-            </div>
-
-        </div>
-    </form>
-    <form id="filterForm3" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_año' %}" class="mb-4">
-        <div class="form-row mt-3">
-            <div class="row-cols-3">
-                <label for="filtro_año" style="font-weight: bold;">Filtrar por año:</label>
-                <input type="filtro_año" id="filtro_año" name="filtro_año" required min="1950" max="9999" pattern="[0-9]{4}" title="Debe ser un año (202)">
-                 
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-            </div>
-
-        </div>
-    </form>
-
+    
     <div class="row">
-
-        {% for gasto in gastos %}
-        {% for gasto in gastos %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ gasto.nombre }}</h5>
-                    <p class="card-text">Cantidad: {{ gasto.cantidad }}</p>
-                    <p class="card-text">Categoría: {{ gasto.categoria }}</p>
-                    <p class="card-text">Fecha: {{ gasto.fecha }}</p>
-                    <p class="card-text">FechaFin: {{ gasto.fechaFin }}</p>
-                    <!-- Agrega más información de gasto si es necesario -->
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-        {% endfor %}
-        <p class="text-center" style="font-weight: bold;" >{{ errorfiltrarAño }}</p>
-
+        <div class="col d-flex align-items-center justify-content-center">
+            <a href={% url 'gastos_unico' %}  class="btn btn-outline-primary boton-grande float-left text-center">Gastos <br> Únicos</a>
+          </div>
+      
+          <div class="col d-flex align-items-center justify-content-center">
+            <a href={% url 'gastos_recurrente' %} class="btn btn-outline-primary boton-grande float-right text-center">Gastos <br> Recurrentes</a>
+          </div>
     </div>
-</div>
-<script>
-    // Esconder formulario
-    $(document).ready(function () {
-        $('#toggleFormBtn').click(function () {
-            $('#filterForm').toggle();
-            var btnText = $('#filterForm').is(':visible') ? 'Ocultar' : 'Filtrar por rango fecha';
-            $(this).text(btnText);
-        })
-
-        $('#toggleFormBtn2').click(function () {
-            $('#filterForm2').toggle();
-            var btnText = $('#filterForm2').is(':visible') ? 'Ocultar' : 'Filtrar por Mes';
-            $(this).text(btnText);
-        })
-        $('#toggleFormBtn3').click(function () {
-            $('#filterForm3').toggle();
-            var btnText = $('#filterForm3').is(':visible') ? 'Ocultar' : 'Filtrar por Año';
-            $(this).text(btnText);
-        })
-    })
-</script>
+  </div>
+  </div>
 
 {% endblock %}

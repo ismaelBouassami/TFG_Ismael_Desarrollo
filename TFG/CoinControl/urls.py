@@ -25,9 +25,27 @@ urlpatterns = [
     path('register/',views.register, name='register'),
     path('logout/',views.logout_view, name='logout'),
     path('mis_gastos/',views_gastos.misgastos_view, name='mis_gastos'),
-    path('mis_gastos/flitro_rango',views_gastos.filtrar_mis_gastos_rango_fecha, name='filtrar_mis_gastos_rango_fecha'),
-    path('mis_gastos/flitro_mes',views_gastos.filtrar_mis_gastos_mes, name='filtrar_mis_gastos_mes'),
-    path('mis_gastos/flitro_año',views_gastos.filtrar_mis_gastos_año, name='filtrar_mis_gastos_año'),
+    path('mis_gastos/unicos',views_gastos.gastosUnicos_view,name='gastos_unico'),
+    path('mis_gastos/recurrente',views_gastos.gastosRecurrente_view,name='gastos_recurrente'),
+    
+    
+    
+    
+    
+    
+    
+    path('mis_gastos/recurrentes/flitro_rango',views_gastos.filtrar_mis_gastos_rango_fecha_Recurrente, name='filtrar_mis_gastos_rango_fecha_Recurrente'),
+    path('mis_gastos/recurrentes/flitro_mes',views_gastos.filtrar_mis_gastos_mes_Recurrente, name='filtrar_mis_gastos_mes_Recurrente'),
+    path('mis_gastos/recurrentes/flitro_año',views_gastos.filtrar_mis_gastos_año_Recurrente, name='filtrar_mis_gastos_año_Recurrente'),
+ 
+    path('mis_gastos/unicos/flitro_rango',views_gastos.filtrar_mis_gastos_rango_fecha_Unico, name='filtrar_mis_gastos_rango_fecha_Unico'),
+    path('mis_gastos/unicos/flitro_mes',views_gastos.filtrar_mis_gastos_mes_Unico, name='filtrar_mis_gastos_mes_Unico'),
+    path('mis_gastos/unicos/flitro_año',views_gastos.filtrar_mis_gastos_año_Unico, name='filtrar_mis_gastos_año_Unico'),
+    
+    
+    path('mis_gastos/unicos/new',views_gastos.new_gasto_unico, name='new_gasto_unico'),
+    path('mis_gastos/recurrentes/new',views_gastos.new_gasto_recurrente, name='new_gasto_recurrente'),
+    
   #  path('mis_ingresos/',views.misingresos_view, name='mis_ingresos'),
     
     

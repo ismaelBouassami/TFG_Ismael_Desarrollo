@@ -7,7 +7,6 @@ class Gasto(models.Model):
     fecha = models.DateField()
     fechaFin =models.DateField(null=True,blank=True)
     categoria = models.CharField(max_length=100)
-    metodo_pago = models.CharField(max_length=50)
     notas = models.TextField(blank=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     pagoUnico = models.BooleanField(default=False)

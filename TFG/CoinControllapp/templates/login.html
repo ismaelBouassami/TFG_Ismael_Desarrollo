@@ -35,7 +35,7 @@
                     <form method="POST">
                         {% csrf_token %}
                        
-                        <p class="error">{{ error }}</p>
+                        <p class="error" style="color: #d35050;">{{ error }}</p>
                         
                         <div class="form-group">
                             <input type="text" name="username" id="id_username" class="form-control"

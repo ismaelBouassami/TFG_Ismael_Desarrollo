@@ -17,24 +17,21 @@ def home(request):
 #LOGIN FUNCIONALIDAD
 def user_login(request):
     if request.method == 'POST':
-        form =LoginForm(request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
-            user = authenticate(request,username = cd['username'],
-                                password= cd['password']
-                                )# si no existe sera = none
+            user = authenticate(request, username=cd['username'], password=cd['password'])
             if user is not None:
-                if user.is_active:  #asegurarse de que este activo para poder acceder a el
-                    login(request,user)
+                if user.is_active:
+                    login(request, user)
                     return redirect('home')
                 else:
-                    return HttpResponse('El usuario no esta activo')
-                
-            else: 
-                return HttpResponse('La informacion no es correcta')
+                    return render(request, 'login.html', {'error': 'Usuario no activo.'})
+            else:
+                return render(request, 'login.html', {'error': 'Usuario o contraseña incorrectos.'})
     else:
-        form =LoginForm()
-        return render(request,'login.html', {'form': form})
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
 
 
 
@@ -79,26 +76,7 @@ def register(request):
     
     
     
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(request, request.POST)
-        #INSTANCIA DEL FORM
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            #autentificacion de usuario
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                print(user)
-                login(request, user)
-                # Redirigir a la página de inicio
-                return redirect('home')
-            else:
-                # Mostrar un mensaje de error si las credenciales son incorrectas
-                form.add_error(None, 'Usuario o contraseña incorrectos.')
-    else:
-        form = AuthenticationForm()
-    return render(request,'login.html', {'form': form})
+
 
 def logout_view(request):
     logout(request)
