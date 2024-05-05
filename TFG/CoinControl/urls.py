@@ -46,6 +46,12 @@ urlpatterns = [
     path('mis_gastos/unicos/new',views_gastos.new_gasto_unico, name='new_gasto_unico'),
     path('mis_gastos/recurrentes/new',views_gastos.new_gasto_recurrente, name='new_gasto_recurrente'),
     
+    path('mis_gastos/borrarUnico/<int:gasto_id>/', views_gastos.borrar_gasto_unico, name='borrar_gasto_unico'),
+    path('mis_gastos/borrarRecurrente/<int:gasto_id>/', views_gastos.borrar_gasto_recurrente, name='borrar_gasto_recurrente'),
+    path('mis_gastos/editarUnico/<int:gasto_id>/', views_gastos.editar_gasto_unico, name='editar_gasto_unico'),
+    path('mis_gastos/editarUnico/view/<int:gasto_id>/', views_gastos.editar_gasto_unico_view, name='editar_gasto_unico_view'),
+    path('mis_gastos/editarRecurrente/view/<int:gasto_id>/', views_gastos.editar_gasto_recurrente_view, name='editar_gasto_recurrente_view'),
+    path('mis_gastos/editarRecurrente/<int:gasto_id>/', views_gastos.editar_gasto_recurrente, name='editar_gasto_recurrente'),
   #  path('mis_ingresos/',views.misingresos_view, name='mis_ingresos'),
     
     

@@ -1,8 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import authenticate, login,logout
+from django.shortcuts import get_object_or_404,render, redirect
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -149,3 +146,75 @@ def new_gasto_recurrente (request):
         return redirect('gastos_recurrente')  
     else:
         return render(request, 'new_gasto_recurrente.html',{'error': error }) 
+    
+def borrar_gasto_unico(request, gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    gasto.delete()
+    return redirect('gastos_unico')
+
+def borrar_gasto_recurrente(request, gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    gasto.delete()
+    return redirect('gastos_recurrente')
+
+
+@login_required
+def editar_gasto_unico(request, gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre = request.POST.get('nombre')
+        cantidad = request.POST.get('cantidad')
+        categoria = request.POST.get('categoria')
+        fecha = request.POST.get('fecha')
+        
+        
+        # Actualizar los atributos del gasto
+        gasto.nombre = nombre
+        gasto.cantidad = cantidad
+        gasto.categoria = categoria
+        gasto.fecha = fecha
+        
+        # Guardar el gasto actualizado
+        gasto.save()
+        
+        return redirect('gastos_unico')  
+    else:
+        return render(request, 'editar_gasto.html', {'gasto': gasto})
+
+
+@login_required
+def editar_gasto_recurrente(request, gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        nombre = request.POST.get('nombre')
+        cantidad = request.POST.get('cantidad')
+        categoria = request.POST.get('categoria')
+        fecha = request.POST.get('fecha')
+        fechaFin = request.POST.get('fechaFin')
+        # Actualizar los atributos del gasto
+        gasto.nombre = nombre
+        gasto.cantidad = cantidad
+        gasto.categoria = categoria
+        gasto.fecha = fecha
+        gasto.fechaFin= fechaFin
+        if fecha >= fechaFin:
+            error ='La fecha inicial no puede ser superior a la fecha finalización'
+            return render(request, 'edit_gasto_recurrente_view.html',{ 'error': error, 'gasto': gasto }) 
+        
+        # Guardar el gasto actualizado
+        gasto.save()
+        
+        return redirect('gastos_recurrente') 
+    else:
+        return render(request, 'edit_gasto_recurrente_view.html', {'gasto': gasto})
+
+def editar_gasto_unico_view(request,gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    
+    return render(request, 'edit_gasto_unico_view.html', {'gasto': gasto})
+def editar_gasto_recurrente_view(request,gasto_id):
+    gasto = get_object_or_404(Gasto, id=gasto_id)
+    
+    return render(request, 'edit_gasto_recurrente_view.html', {'gasto': gasto})

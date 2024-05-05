@@ -135,6 +135,11 @@
                     </h2>
                     <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
                     <p class="m-b-0">Desde: {{ gasto.fecha }}  <br>Hasta: {{gasto.fechaFin}}</span></p>
+                    <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_gasto_recurrente_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <div class="btn-group-divider" style="width: 10px;"></div>
+                        <a href="{% url 'borrar_gasto_recurrente' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -147,6 +152,11 @@
                     </h2>
                     <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
                     <p class="m-b-0">Desde: {{ gasto.fecha }} <br>Hasta :{{gasto.fechaFin}}</span></p>
+                    <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_gasto_recurrente_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <div class="btn-group-divider" style="width: 10px;"></div>
+                        <a href="{% url 'borrar_gasto_recurrente' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,6 +169,11 @@
                     </h2>
                     <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
                     <p class="m-b-0">Desde: {{ gasto.fecha }} <br>Hasta: {{gasto.fechaFin}}</span></p>
+                     <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_gasto_recurrente_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <div class="btn-group-divider" style="width: 10px;"></div>
+                        <a href="{% url 'borrar_gasto_recurrente' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -171,6 +186,11 @@
                     </h2>
                     <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
                     <p class="m-b-0">Desde: {{ gasto.fecha }} <br>Hasta: {{gasto.fechaFin}}</span></p>
+                     <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_gasto_recurrente_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <div class="btn-group-divider" style="width: 10px;"></div>
+                        <a href="{% url 'borrar_gasto_recurrente' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
