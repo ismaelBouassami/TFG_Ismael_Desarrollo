@@ -51,19 +51,19 @@
     .f-right {
         float: right;
     }
-</style>
-<div class="container">
-    <h1 class="mt-4 mb-4 text-center">Mis Gastos Unicos</h1>
+</style><div class="container">
+    <h1 class="mt-4 mb-4 text-center">Mis Ingresos Recurrentes</h1>
 
     <div class="text-center mb-3">
         <button id="toggleFormBtn" class="btn btn-primary">Filtrar por rango fecha</button>
         <button id="toggleFormBtn2" class="btn btn-primary">Filtrar por mes</button>
         <button id="toggleFormBtn3" class="btn btn-primary">Filtrar por año</button>
-        <a href="{% url 'new_gasto_unico' %}" class="btn btn-primary">Añadir gasto unico</a>
+        <a href="{% url 'new_ingresp_recurrente' %}" class="btn btn-primary">Añadir ingreso recurrente</a>
+
     </div>
 
     <!-- Formulario de filtrado por rango de  fecha -->
-    <form id="filterForm" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_rango_fecha_Unico' %}"
+    <form id="filterForm" style="display: none;" method="GET" action="{% url 'filtrar_mis_ingresos_rango_fecha_Recurrente' %}"
         class="mb-4">
         <div class="form-row ">
             <div class="cols-3">
@@ -79,7 +79,7 @@
         </div>
     </form>
     <!-- Formulario de filtrado por rango de  fecha -->
-    <form id="filterForm2" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_mes_Unico' %}" class="mb-4">
+    <form id="filterForm2" style="display: none;" method="GET" action="{% url 'filtrar_mis_ingresos_mes_Recurrente' %}" class="mb-4">
         <div class="form-row ">
             <div class="cols-3">
                 <label for="filtro_mes" style="font-weight: bold;">Filtrar por mes:</label> <br>
@@ -107,7 +107,7 @@
 
         </div>
     </form>
-    <form id="filterForm3" style="display: none;" method="GET" action="{% url 'filtrar_mis_gastos_año_Unico' %}" class="mb-4">
+    <form id="filterForm3" style="display: none;" method="GET" action="{% url 'filtrar_mis_ingresos_año_Recurrente' %}" class="mb-4">
         <div class="form-row ">
             <div class="cols-3">
                 <label for="filtro_año" style="font-weight: bold;">Filtrar por año:</label><br>
@@ -120,23 +120,25 @@
         </div>
     </form>
 
+
+
     <div class="row">
 
-        {% for gasto in gastos %}
-        {% for gasto in gastos %}
+        {% for ingreso in ingresos %}
+        {% for ingreso in ingresos %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-blue order-card">
                 <div class="card-block">
-                    <h6 class="m-b-20">{{ gasto.nombre }}</h6>
-                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ gasto.cantidad }}€</span>
+                    <h6 class="m-b-20">{{ ingreso.nombre }}</h6>
+                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ ingreso.cantidad }}€</span>
                     </h2>
-                    <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
-                    <p class="m-b-0">{{ gasto.fecha }}</p>
+                    <p class="m-b-0">{{ ingreso.categoria }}<span class="f-right"></span></p>
+                    <p class="m-b-0">Desde: {{ ingreso.fecha }}  <br>Hasta: {{ingreso.fechaFin}}</span></p>
                     <div class="btn-group" role="group" aria-label="Botones de acción">
-                        <a href="{% url 'editar_gasto_unico_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <a href="{% url 'editar_ingreso_recurrente_view' ingreso.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
                         <div class="btn-group-divider" style="width: 10px;"></div>
-                        <a href="{% url 'borrar_gasto_unico' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'borrar_ingreso_recurrente' ingreso.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </div>
@@ -145,15 +147,15 @@
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-green order-card">
                 <div class="card-block">
-                    <h6 class="m-b-20">{{ gasto.nombre }}</h6>
-                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ gasto.cantidad }}€</span>
+                    <h6 class="m-b-20">{{ ingreso.nombre }}</h6>
+                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ ingreso.cantidad }}€</span>
                     </h2>
-                    <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
-                    <p class="m-b-0">{{ gasto.fecha }}</p>
+                    <p class="m-b-0">{{ ingreso.categoria }}<span class="f-right"></span></p>
+                    <p class="m-b-0">Desde: {{ ingreso.fecha }} <br>Hasta :{{ingreso.fechaFin}}</span></p>
                     <div class="btn-group" role="group" aria-label="Botones de acción">
-                        <a href="{% url 'editar_gasto_unico_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                        <a href="{% url 'editar_ingreso_recurrente_view' ingreso.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
                         <div class="btn-group-divider" style="width: 10px;"></div>
-                        <a href="{% url 'borrar_gasto_unico' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'borrar_ingreso_recurrente' ingreso.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </div>
@@ -162,15 +164,15 @@
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-yellow order-card">
                 <div class="card-block">
-                    <h6 class="m-b-20">{{ gasto.nombre }}</h6>
-                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ gasto.cantidad }}€</span>
+                    <h6 class="m-b-20">{{ ingreso.nombre }}</h6>
+                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ ingreso.cantidad }}€</span>
                     </h2>
-                    <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
-                    <p class="m-b-0">{{ gasto.fecha }}</p>
-                    <div class="btn-group" role="group" aria-label="Botones de acción">
-                        <a href="{% url 'editar_gasto_unico_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                    <p class="m-b-0">{{ ingreso.categoria }}<span class="f-right"></span></p>
+                    <p class="m-b-0">Desde: {{ ingreso.fecha }} <br>Hasta: {{ingreso.fechaFin}}</span></p>
+                     <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_ingreso_recurrente_view' ingreso.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
                         <div class="btn-group-divider" style="width: 10px;"></div>
-                        <a href="{% url 'borrar_gasto_unico' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'borrar_ingreso_recurrente' ingreso.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </div>
@@ -179,15 +181,15 @@
         <div class="col-md-4 col-xl-3">
             <div class="card bg-c-pink order-card">
                 <div class="card-block">
-                    <h6 class="m-b-20">{{ gasto.nombre }}</h6>
-                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ gasto.cantidad }}€</span>
+                    <h6 class="m-b-20">{{ ingreso.nombre }}</h6>
+                    <h2 class="text-right"><i class="fa fa-credit-card f-left"></i><span>{{ ingreso.cantidad }}€</span>
                     </h2>
-                    <p class="m-b-0">{{ gasto.categoria }}<span class="f-right"></span></p>
-                    <p class="m-b-0">{{ gasto.fecha }}</p>
-                    <div class="btn-group" role="group" aria-label="Botones de acción">
-                        <a href="{% url 'editar_gasto_unico_view' gasto.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
+                    <p class="m-b-0">{{ ingreso.categoria }}<span class="f-right"></span></p>
+                    <p class="m-b-0">Desde: {{ ingreso.fecha }} <br>Hasta: {{ingreso.fechaFin}}</span></p>
+                     <div class="btn-group" role="group" aria-label="Botones de acción">
+                        <a href="{% url 'editar_ingreso_recurrente_view' ingreso.id %}" class="btn btn-warning" role="button" title="Editar"><i class="fa fa-pencil"></i></a>
                         <div class="btn-group-divider" style="width: 10px;"></div>
-                        <a href="{% url 'borrar_gasto_unico' gasto.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
+                        <a href="{% url 'borrar_ingreso_recurrente' ingreso.id %}" class="btn btn-danger" role="button" title="Borrar"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
             </div>
