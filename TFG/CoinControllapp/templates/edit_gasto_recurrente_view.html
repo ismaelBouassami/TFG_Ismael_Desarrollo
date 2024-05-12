@@ -42,7 +42,10 @@
                         </div>
                         <div class="form-group">
                             <label for="cantidad">Cantidad:</label>
-                            <input type="number" id="cantidad" name="cantidad" class="form-control" required>
+                            <input type="text" name="cantidad" id="cantidad" class="form-control"
+                                pattern="[0-9]+(\.[0-9]{1,2})?"" required title=" Por favor, introduce un número válido
+                                (por ejemplo, 123.45)">
+
                         </div>
                         <div class="form-group">
                             <label for="fecha">Fecha:</label>
@@ -78,11 +81,13 @@
 <script>
     // para poder poner la cantidad
     document.addEventListener('DOMContentLoaded', function() {
-        var cantidadInput = document.getElementById('cantidad');
-        var gastoCantidad = "{{ gasto.cantidad }}";
-        if (gastoCantidad !== "") {
-            cantidadInput.value = parseFloat(gastoCantidad);
-        }
+    var cantidadInput = document.getElementById('cantidad');
+    var gastoCantidad = "{{ gasto.cantidad }}";
+    // Reemplazar comas con puntos
+    gastoCantidad = gastoCantidad.replace(',', '.');
+    if (gastoCantidad !== "") {
+        cantidadInput.value = gastoCantidad;
+    }
     });
 </script>
 {% endblock %}

@@ -23,11 +23,11 @@ class Gasto(models.Model):
 
 class Ingreso(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, default='No especificado')
     fecha = models.DateField()
     fechaFin = models.DateField(blank=True, null=True)
-    monto = models.DecimalField(max_digits=10, decimal_places=2)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=2)
     categoria = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Ingreso de {self.monto} ({self.categoria}) desde {self.fecha_inicio} hasta {self.fecha_fin if self.fecha_fin else 'presente'}"
+        return self.nombre

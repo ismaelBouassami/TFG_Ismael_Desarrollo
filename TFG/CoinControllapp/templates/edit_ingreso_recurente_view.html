@@ -42,7 +42,8 @@
                         </div>
                         <div class="form-group">
                             <label for="cantidad">Cantidad:</label>
-                            <input type="number" id="cantidad" name="cantidad" class="form-control" required>
+                            <input type="text" name="cantidad" id="cantidad" class="form-control"  pattern="[0-9]+(\.[0-9]{1,2})?" required title="Por favor, introduce de maximo dos decimales (por ejemplo, 123.45)">
+
                         </div>
                         <div class="form-group">
                             <label for="fecha">Fecha:</label>
@@ -78,11 +79,13 @@
 <script>
     // para poder poner la cantidad
     document.addEventListener('DOMContentLoaded', function() {
-        var cantidadInput = document.getElementById('cantidad');
-        var ingresoCantidad = "{{ ingreso.cantidad }}";
-        if (ingresoCantidad !== "") {
-            cantidadInput.value = parseFloat(ingresoCantidad);
-        }
-    });
+    var cantidadInput = document.getElementById('cantidad');
+    var ingresoCantidad = "{{ ingreso.cantidad }}";
+    // Reemplazar comas con puntos
+    console.log(ingresoCantidad);
+    ingresoCantidad = ingresoCantidad.replace(',', '.');
+    if (ingresoCantidad !== "") {
+        cantidadInput.value = ingresoCantidad;
+    }});
 </script>
 {% endblock %}

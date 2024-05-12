@@ -46,7 +46,7 @@ def filtrar_mis_ingresos_rango_fecha_Unico(request):
     fecha_fin = request.GET.get('fecha_fin')
 
     # Filtrar los ingresos por fecha
-    ingresos = Gasto.objects.filter(usuario=request.user,  fecha__range=[fecha_inicio, fecha_fin],fechaFin__isnull= True)
+    ingresos = Ingreso.objects.filter(usuario=request.user,  fecha__range=[fecha_inicio, fecha_fin],fechaFin__isnull= True)
     print(ingresos)
     return render(request, 'mis_ingresos_unicos.html', {'ingresos': ingresos})
 
@@ -57,7 +57,7 @@ def filtrar_mis_ingresos_año_Unico(request):
     añoNum = int(año)
     errorfiltrarAño=''
     # Filtrar los ingresos por fecha
-    ingresos = Gasto.objects.filter(usuario=request.user,  fecha__year=añoNum,fechaFin__isnull= True)
+    ingresos = Ingreso.objects.filter(usuario=request.user,  fecha__year=añoNum,fechaFin__isnull= True)
     if not ingresos.exists():
       errorfiltrarAño='No se encotraron resultados del año '+ año
     print(ingresos)
@@ -112,7 +112,7 @@ def filtrar_mis_ingresos_mes_Recurrente(request):
     # Filtrar los ingresos por fecha que caen dentro del mes seleccionado
     ingresos = Ingreso.objects.filter(
         (Q(fecha__month__lte=mes_numero) & Q(fechaFin__month__gte=mes_numero)), usuario=request.user
-    )
+    )   
     
     print(ingresos)
     return render(request, 'mis_ingresos_recurrentes.html', {'ingresos': ingresos})
@@ -125,9 +125,9 @@ def new_ingreso_unico(request):
         categoria = request.POST['categoria']
         fecha = request.POST['fecha']
          
-        ingreso = Ingreso(nombre=nombre, cantidad=cantidad, categoria=categoria, fecha=fecha, pagoUnico=True, usuario= request.user)
+        ingreso = Ingreso(nombre=nombre, cantidad=cantidad, categoria=categoria, fecha=fecha, usuario= request.user)
         ingreso.save()
-        return redirect('ingresos_unico')  
+        return redirect('ingreso_unico')  
     else:
         return render(request, 'new_ingreso_unico.html') 
     
@@ -146,21 +146,21 @@ def new_ingreso_recurrente (request):
             error ='La fecha inico no puede ser superior a la fecha fin'
             return render(request, 'new_ingreso_recurrente.html',{ 'error': error }) 
         
-        ingreso = ingreso(nombre=nombre, cantidad=cantidad, categoria=categoria, fecha=fecha,fechaFin=fechaFin, pagoUnico=False, usuario= request.user)
+        ingreso = Ingreso(nombre=nombre, cantidad=cantidad, categoria=categoria, fecha=fecha,fechaFin=fechaFin , usuario= request.user)
         ingreso.save()
-        return redirect('ingresos_recurrente')  
+        return redirect('ingreso_recurrente')  
     else:
         return render(request, 'new_ingreso_recurrente.html',{'error': error }) 
     
 def borrar_ingreso_unico(request, ingreso_id):
     ingreso = get_object_or_404(Ingreso, id=ingreso_id)
     ingreso.delete()
-    return redirect('ingresos_unico')
+    return redirect('ingreso_unico')
 
 def borrar_ingreso_recurrente(request, ingreso_id):
     ingreso = get_object_or_404(Ingreso, id=ingreso_id)
     ingreso.delete()
-    return redirect('ingresos_recurrente')
+    return redirect('ingreso_recurrente')
 
 
 @login_required
@@ -183,7 +183,7 @@ def editar_ingreso_unico(request, ingreso_id):
         # Guardar el ingreso actualizado
         ingreso.save()
         
-        return redirect('ingresos_unico')  
+        return redirect('ingreso_unico')  
     else:
         return render(request, 'editar_ingreso.html', {'ingreso': ingreso})
 
@@ -211,7 +211,7 @@ def editar_ingreso_recurrente(request, ingreso_id):
         # Guardar el ingreso actualizado
         ingreso.save()
         
-        return redirect('ingresos_recurrente') 
+        return redirect('ingreso_recurrente') 
     else:
         return render(request, 'edit_ingreso_recurrente_view.html', {'ingreso': ingreso})
 
