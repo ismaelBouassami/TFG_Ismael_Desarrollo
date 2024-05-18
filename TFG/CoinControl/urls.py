@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from CoinControllapp import views
-from CoinControllapp import views_gastos, views_ingresos
+from CoinControllapp import views_gastos, views_ingresos, views_estadisticas
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home, name='home'),
@@ -79,5 +79,14 @@ urlpatterns = [
     path('mis_ingresos/editarUnico/view/<int:ingreso_id>/', views_ingresos.editar_ingreso_unico_view, name='editar_ingreso_unico_view'),
     path('mis_ingresos/editarRecurrente/view/<int:ingreso_id>/', views_ingresos.editar_ingreso_recurrente_view, name='editar_ingreso_recurrente_view'),
     path('mis_ingresos/editarRecurrente/<int:ingreso_id>/', views_ingresos.editar_ingreso_recurrente, name='editar_ingreso_recurrente'),
+ 
+ 
+ 
+ 
+ 
+ #
+    path('mis_stats/', views_estadisticas.mis_estadisticas, name='mis_estadisticas'),
+    path('mis_stats/Gastos/<mes>', views_estadisticas.gastoInicio, name='gasto_inicio'),
+    path('mis_stats/Gastos/getStats/<mes>?', views_estadisticas.obtener_gastos_mes_actual, name='obtener_gastos_mes_actual'),
  
 ]
