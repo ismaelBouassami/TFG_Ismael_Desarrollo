@@ -1,5 +1,5 @@
 import pandas as pd
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from .models import Gasto
 import matplotlib.pyplot as plt
@@ -20,7 +20,7 @@ from django.db.models import Q
 
 
 
-
+from django.urls import reverse
 
 
 
@@ -30,38 +30,40 @@ def mis_estadisticas(request):
     mes = _(fecha_actual.strftime("%B")) #traducir el mes
     return render(request,'mis_estadisticas.html',{'mes': mes})
 def gastoInicio(request ,mes ):
+    año =request.GET.get('año')
+    if año is None or año== '':
+      año= None
    
-    return render(request,'gastos_inicio_estadisticas.html', {'month_name': mes})
+    return render(request,'gastos_inicio_estadisticas.html', {'mes': mes, 'año': año})
 
-def obtener_gastos_mes_actual(request,mes):
+def filtrar_gasto(request):
+    filtro_mes = request.GET.get('filtro_mes')
+    filtro_año = request.GET.get('filtro_año')
+    if filtro_año is None:
+      filtro_año= ' '
+    return render(request,'gastos_estadisticas_filtrado.html', {'filtro_mes': filtro_mes, 'filtro_año': filtro_año}) 
+def obtener_gastos_mes(request,mes):  
     
-    if mes is  None:
-        # Obtén la fecha actual
-        fecha_actual = datetime.now()
-        print(fecha_actual.month)
-        mes_actual =fecha_actual.month
-        año_actual =fecha_actual.year
-    else:
+    año = request.GET.get('año')
+
+    if mes:
         meses_espanol_a_numero = {
-            'enero': 1,
-            'febrero': 2,
-            'marzo': 3,
-            'abril': 4,
-            'mayo': 5,
-            'junio': 6,
-            'julio': 7,
-            'agosto': 8,
-            'septiembre': 9,
-            'octubre': 10,
-            'noviembre': 11,
-            'diciembre': 12,
+            'enero': 1, 'febrero': 2, 'marzo': 3, 'abril': 4, 'mayo': 5, 'junio': 6,
+            'julio': 7, 'agosto': 8, 'septiembre': 9, 'octubre': 10, 'noviembre': 11, 'diciembre': 12,
         }
-        mes_num= meses_espanol_a_numero.get(mes.lower())
-        # Obtén la fecha actual
-        fecha_actual = datetime.now()
-        print(fecha_actual.month)
-        mes_actual =mes_num
-        año_actual =fecha_actual.year
+        mes_actual = meses_espanol_a_numero.get(mes.lower(), None)
+    else:
+        mes_actual = datetime.now().month  # Mes actual si no se proporciona
+
+    # Convertir el año a número si se proporciona
+    if año:
+        try:
+            año_actual = int(año)
+        except ValueError:
+            año_actual = datetime.now().year  # Año actual si la conversión falla
+    else:
+        año_actual = datetime.now().year  # Año actual si no se proporciona
+
         
     # Obtén los gastos del mes actual
     # Obtener todos los gastos para el mes actual
