@@ -1,7 +1,7 @@
 import pandas as pd
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from .models import Gasto
+from .models import Gasto, Ingreso
 import matplotlib.pyplot as plt
 import io
 from django.http import HttpResponse
@@ -26,58 +26,75 @@ from django.urls import reverse
 
 
 def mis_estadisticas(request):
+   
     fecha_actual = timezone.now()
     mes = _(fecha_actual.strftime("%B")) #traducir el mes
     return render(request,'mis_estadisticas.html',{'mes': mes})
-def gastoInicio(request ,mes ):
+def statsInicio(request ,mes ,tipo):
     año =request.GET.get('año')
     if año is None or año== '':
-      año= None
-   
-    return render(request,'gastos_inicio_estadisticas.html', {'mes': mes, 'año': año})
-
-def filtrar_gasto(request):
+        año= None
+    if tipo == 'Gasto':
+        return render(request,'gastos_inicio_estadisticas.html', {'mes': mes, 'año': año})
+    else:
+        return render(request,'ingresos_inicio_estadisticas.html', {'mes': mes, 'año': año})
+      
+def filtrar_stats(request,tipo):
     filtro_mes = request.GET.get('filtro_mes')
     filtro_año = request.GET.get('filtro_año')
     if filtro_año is None:
-      filtro_año= ' '
-    return render(request,'gastos_estadisticas_filtrado.html', {'filtro_mes': filtro_mes, 'filtro_año': filtro_año}) 
-def obtener_gastos_mes(request,mes):  
-    
+        filtro_año= ' '
+    if tipo=='Gasto':
+       
+        return render(request,'gastos_estadisticas_filtrado.html', {'filtro_mes': filtro_mes, 'filtro_año': filtro_año}) 
+    else:
+        return render(request,'ingreso_estadisticas_filtrado.html', {'filtro_mes': filtro_mes, 'filtro_año': filtro_año}) 
+        
+def obtener_filtro_mes(request,mes,tipo):  
     año = request.GET.get('año')
 
     if mes:
-        meses_espanol_a_numero = {
-            'enero': 1, 'febrero': 2, 'marzo': 3, 'abril': 4, 'mayo': 5, 'junio': 6,
-            'julio': 7, 'agosto': 8, 'septiembre': 9, 'octubre': 10, 'noviembre': 11, 'diciembre': 12,
-        }
-        mes_actual = meses_espanol_a_numero.get(mes.lower(), None)
+            meses_espanol_a_numero = {
+                'enero': 1, 'febrero': 2, 'marzo': 3, 'abril': 4, 'mayo': 5, 'junio': 6,
+                'julio': 7, 'agosto': 8, 'septiembre': 9, 'octubre': 10, 'noviembre': 11, 'diciembre': 12,
+            }
+            mes_actual = meses_espanol_a_numero.get(mes.lower(), None)
     else:
-        mes_actual = datetime.now().month  # Mes actual si no se proporciona
+            mes_actual = datetime.now().month  # Mes actual si no se proporciona
 
-    # Convertir el año a número si se proporciona
+        # Convertir el año a número si se proporciona
     if año:
-        try:
-            año_actual = int(año)
-        except ValueError:
-            año_actual = datetime.now().year  # Año actual si la conversión falla
+            try:
+                año_actual = int(año)
+            except ValueError:
+                año_actual = datetime.now().year  # Año actual si la conversión falla
     else:
-        año_actual = datetime.now().year  # Año actual si no se proporciona
+            año_actual = datetime.now().year  # Año actual si no se proporciona
+    if tipo=='Gasto':
+        # Obtén los gastos del mes actual
+        # Obtener todos los gastos para el mes actual
+        gastos_mes_actual = Gasto.objects.filter(
+            (Q(fecha__month=mes_actual, fecha__year=año_actual) & Q(pagoUnico=False)) |  # Gastos no recurrentes del mes actual
+            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
+        )
 
-        
-    # Obtén los gastos del mes actual
-    # Obtener todos los gastos para el mes actual
-    gastos_mes_actual = Gasto.objects.filter(
-        (Q(fecha__month=mes_actual, fecha__year=año_actual) & Q(pagoUnico=False)) |  # Gastos no recurrentes del mes actual
-        (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
-    )
-
-    # Crea un DataFrame de Pandas con los datos de los gastos
-    data = {
-        'Categoria': [g.categoria for g in gastos_mes_actual],
-        'Cantidad': [g.cantidad for g in gastos_mes_actual],
-        'Dia': [g.fecha.day for g in gastos_mes_actual]
-    }
+        # Crea un DataFrame de Pandas con los datos de los gastos
+        data = {
+            'Categoria': [g.categoria for g in gastos_mes_actual],
+            'Cantidad': [g.cantidad for g in gastos_mes_actual],
+            'Dia': [g.fecha.day for g in gastos_mes_actual]
+        }
+    else:
+        ingresos_mes_actual = Ingreso.objects.filter(
+            (Q(fecha__month=mes_actual, fecha__year=año_actual)) |  # Gastos no recurrentes del mes actual
+            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
+            )
+        # Crea un DataFrame de Pandas con los datos de los gastos
+        data = {
+            'Categoria': [g.categoria for g in ingresos_mes_actual],
+            'Cantidad': [g.cantidad for g in ingresos_mes_actual],
+            'Dia': [g.fecha.day for g in ingresos_mes_actual]
+            }
     df = pd.DataFrame(data)
 
     # Agrupa los gastos por categoría y calcula la suma de las cantidades

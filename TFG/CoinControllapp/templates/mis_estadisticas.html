@@ -16,11 +16,11 @@
     
     <div class="row">
         <div class="col d-flex align-items-center justify-content-center">
-            <a href={% url 'gasto_inicio' mes=mes %}  class="btn btn-outline-primary boton-grande float-left text-center">Gastos <br> </a>
+            <a href={% url 'stats_inicio' mes=mes tipo='Gasto' %}  class="btn btn-outline-primary boton-grande float-left text-center">Gastos <br> </a>
           </div>
       
           <div class="col d-flex align-items-center justify-content-center">
-              <a href={% url 'gasto_inicio' mes=mes %}  class="btn btn-outline-primary boton-grande float-left text-center">Ingresos <br> </a>
+              <a href={% url 'stats_inicio' mes=mes tipo='Ingreso'%}  class="btn btn-outline-primary boton-grande float-left text-center">Ingresos <br> </a>
             </div>
           
     </div>

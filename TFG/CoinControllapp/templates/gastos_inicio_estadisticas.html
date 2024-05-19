@@ -8,7 +8,7 @@
             <h1 class="mb-4">Gastos de  {{ mes|capfirst }}</h1>
 
             <button id="toggleFormBtn" class="btn btn-secondary mb-3">Mostrar Filtros</button>
-            <form id="filterForm" style="display: none;" method="GET" action="{% url 'filtrar_gasto' %}" class="mb-4">
+            <form id="filterForm" style="display: none;" method="GET" action="{% url 'filtrar_stats' tipo='Gasto' %}" class="mb-4">
                 <div class="form-row">
                     <div class="col-md-3">
                         <label for="filtro_mes" style="font-weight: bold;">Filtrar por mes:</label>
@@ -40,7 +40,7 @@
             
             <div class="card">
                 <div class="card-body">
-                    <img src="{% url 'obtener_gastos_mes' mes=mes %}?año={{año}}" alt="Gráfica de Gastos" class="img-fluid">
+                    <img src="{% url 'obtener_filtro_mes' mes=mes tipo='Gasto' %}?año={{año}}" alt="Gráfica de Gastos" class="img-fluid">
                 </div>
             </div>
         </div>

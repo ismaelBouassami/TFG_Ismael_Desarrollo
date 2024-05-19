@@ -85,9 +85,9 @@ urlpatterns = [
  
  
  #
-    path('mis_stats/<tipo>', views_estadisticas.mis_estadisticas, name='mis_estadisticas'),
-    path('mis_stats/Gastos/<mes>', views_estadisticas.gastoInicio, name='gasto_inicio'),
-    path('mis_stats/Gastos/', views_estadisticas.filtrar_gasto, name='filtrar_gasto'),
-    path('mis_stats/Gastos/getStats/<mes>', views_estadisticas.obtener_gastos_mes, name='obtener_gastos_mes'),
+    path('mis_stats/', views_estadisticas.mis_estadisticas, name='mis_estadisticas'),
+    path('mis_stats/<tipo>/<mes>', views_estadisticas.statsInicio, name='stats_inicio'),
+    path('mis_stats/<tipo>/filtrar/', views_estadisticas.filtrar_stats, name='filtrar_stats'),
+    path('mis_stats/<tipo>/getStats/<mes>', views_estadisticas.obtener_filtro_mes, name='obtener_filtro_mes'),
  
 ]
