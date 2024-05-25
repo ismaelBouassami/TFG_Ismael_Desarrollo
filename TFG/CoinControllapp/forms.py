@@ -6,16 +6,16 @@ class LoginForm(forms.Form):
     
 # Crear un modelo de formulario para poder manejar los datos
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(label='Repeat Password', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password2 = forms.CharField(label='Contraseña repetida', widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     
     class Meta:
         model = User
         fields = ['username', 'first_name', 'email']
         labels = {
-            'username': 'Username',
-            'first_name': 'First Name',
-            'email': 'Email'
+            'username': 'Usuario',
+            'first_name': 'Nombre',
+            'email': 'Correo electrónico'
         }
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),

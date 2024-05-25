@@ -21,8 +21,10 @@ def user_login(request):
         if form.is_valid():
             cd = form.cleaned_data
             user = authenticate(request, username=cd['username'], password=cd['password'])
+            #en caso de que haya un usuario con ese nombre y contraseña lo retornara 
             if user is not None:
                 if user.is_active:
+                    #comprueba que el usuario logueado este acitvo , lo maneja Django Automaticamente 
                     login(request, user)
                     return redirect('home')
                 else:
@@ -48,7 +50,7 @@ def register(request):
                 new_user.set_password(
                 user_form.cleaned_data['password']
                 )# set_password encripta  la contraseña que se le pasa desde cleaned data => que recoge ya los datos validados 
-                print(user_form.cleaned_data['password'],user_form.cleaned_data['password2'] )
+               
                 new_user.save()
                 login(request,new_user)
                 return redirect('home')
@@ -59,11 +61,8 @@ def register(request):
         else:
             #me devuelve los errores del metodo ya creado en forms.py
             error = user_form.errors.as_data()
-            
             return render(request, 'register.html',{'user_form':user_form,'error': error})
-        
     else: 
-        
         user_form= UserRegistrationForm()
         return render(request, 'register.html',{'user_form':user_form,'error': error})
     

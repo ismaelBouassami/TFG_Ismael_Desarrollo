@@ -8,6 +8,10 @@
     <!-- Agrega los enlaces a los archivos CSS de Bootstrap -->
 
     <style>
+        body {
+            background-color: #3c8ddf;
+        }
+
         .coin {
             text-align: left;
             font-family: Arial;
@@ -20,6 +24,8 @@
         .coin,
         .controll {
             display: inline-block;
+            margin-top: 15%;
+            margin-bottom: auto;
         }
 
         .controll {
@@ -41,7 +47,8 @@
 </head>
 <header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+
 
         <h1>
             <p class="coin">Coin
@@ -56,42 +63,42 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'home' %}>Inicio <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" style="color: azure;" href={% url 'home' %}>Inicio <span class="sr-only">(current)</span></a>
                 </li>
-
-
-
+                
+                
                 {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'mis_gastos' %}>Mis Gastos <span
+                    <a class="nav-link"style="color: azure;"  href={% url 'mis_gastos' %}>Mis Gastos <span
+                        
                             class="sr-only">(current)</span></a>
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'mis_ingresos' %}>Mis Ingresos <span
+                    <a class="nav-link"style="color: azure;"  href={% url 'mis_ingresos' %}>Mis Ingresos <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'mis_estadisticas' %}>Mis Estadisticas <span
+                    <a class="nav-link"style="color: azure;"  href={% url 'mis_estadisticas' %}>Mis Estadisticas <span
                             class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown active">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle bg-dark" style="color: azure;"  href="#" id="navbarDropdownMenuLink" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Bienvenido, {{ request.user.username }}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Ver perfil</a>
-                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    <div class="dropdown-menu bg-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" style="color: azure;" href="#">Ver perfil</a>
+                        <a class="dropdown-item" style="color: azure;"  href="{% url 'logout' %}">Cerrar Sesión</a>
                     </div>
                 </li>
                 {% else %}
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'login' %}>Login</a>
+                    <a class="nav-link" href={% url 'login' %} style="color: azure;" >Login</a>
                 </li>
 
                 <li class="nav-item active">
-                    <a class="nav-link" href={% url 'register' %}>Registro</a>
+                    <a class="nav-link" href={% url 'register' %} style="color: azure;" >Registro</a>
                 </li>
                 {% endif %}
 

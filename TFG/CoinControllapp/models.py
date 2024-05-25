@@ -10,14 +10,6 @@ class Gasto(models.Model):
     notas = models.TextField(blank=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     pagoUnico = models.BooleanField(default=False)
-    frecuencia_choices = [
-        ('mensual', 'Mensual'),
-        ('semanal', 'Semanal'),
-        ('anual', 'Anual'),
-        # Agrega más opciones según sea necesario
-    ]
-    frecuencia = models.CharField(max_length=10, choices=frecuencia_choices, blank=True, null=True)
-
     def __str__(self):
         return self.nombre
 

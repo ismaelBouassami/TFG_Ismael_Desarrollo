@@ -23,7 +23,8 @@ from django.db.models import Q
 from django.urls import reverse
 
 
-
+#TODO: filtrado por año erroneo
+#TODO: controlar dinero negativo
 
 def mis_estadisticas(request):
    
@@ -33,7 +34,7 @@ def mis_estadisticas(request):
 def statsInicio(request ,mes ,tipo):
     año =request.GET.get('año')
     if año is None or año== '':
-        año= None
+        año= datetime.now().year 
     if tipo == 'Gasto':
         return render(request,'gastos_inicio_estadisticas.html', {'mes': mes, 'año': año})
     else:
@@ -64,18 +65,17 @@ def obtener_filtro_mes(request,mes,tipo):
 
         # Convertir el año a número si se proporciona
     if año:
-            try:
-                año_actual = int(año)
-            except ValueError:
-                año_actual = datetime.now().year  # Año actual si la conversión falla
+           
+        año_actual = int(año)
+           
     else:
-            año_actual = datetime.now().year  # Año actual si no se proporciona
+        año_actual = datetime.now().year  # Año actual si no se proporciona
     if tipo=='Gasto':
         # Obtén los gastos del mes actual
         # Obtener todos los gastos para el mes actual
         gastos_mes_actual = Gasto.objects.filter(
             (Q(fecha__month=mes_actual, fecha__year=año_actual) & Q(pagoUnico=False)) |  # Gastos no recurrentes del mes actual
-            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
+            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual ))& (Q(fecha__year=año_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
         )
 
         # Crea un DataFrame de Pandas con los datos de los gastos
@@ -87,7 +87,7 @@ def obtener_filtro_mes(request,mes,tipo):
     else:
         ingresos_mes_actual = Ingreso.objects.filter(
             (Q(fecha__month=mes_actual, fecha__year=año_actual)) |  # Gastos no recurrentes del mes actual
-            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
+            (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual))& (Q(fecha__year=año_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
             )
         # Crea un DataFrame de Pandas con los datos de los gastos
         data = {
@@ -103,15 +103,23 @@ def obtener_filtro_mes(request,mes,tipo):
     # Definir una lista de colores y un ciclo de colores
     colors = ['skyblue', 'lightgreen', 'coral', 'lightpink', 'lightyellow', 'lightgray', 'lightblue', 'violet']
     color_cycle = cycle(colors)
-
+    
     # Asignar colores de manera cíclica a cada barra
     bar_colors = [next(color_cycle) for _ in range(len(df_agrupado))]
     # Crea la gráfica de barras
+    
+#
+    # Crea la gráfica de barras
     plt.figure(figsize=(8, 4))
-    plt.bar(df_agrupado['Categoria'], df_agrupado['Cantidad'], color=bar_colors,width=0.4)
+    bars = plt.bar(df_agrupado['Categoria'], df_agrupado['Cantidad'], color=bar_colors, width=0.4)
+
+    for bar, cantidad in zip(bars, df_agrupado['Cantidad']):
+        texto = str(cantidad) + str('€')
+        plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height()/2,texto  , ha='center', va='bottom')
+
     plt.xlabel('')
     plt.ylabel('')
-   # plt.title('Gastos del mes actual por categoría')
+   # plt.title('Gastos del mes actual por categoría') 
     plt.xticks()
     plt.tight_layout()
 
