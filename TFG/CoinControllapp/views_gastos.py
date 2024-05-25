@@ -49,7 +49,8 @@ def filtrar_mis_gastos_mes_Unico(request):
     mes_numero = request.GET.get('filtro_mes')
     print('Numero del mes '+ str(mes_numero))
     # Filtrar los gastos por fecha
-    gastos = Gasto.objects.filter(usuario=request.user, fecha__month=mes_numero,fechaFin__isnull= True)
+    gastos = Gasto.objects.filter(usuario=request.user, 
+                                  fecha__month=mes_numero,fechaFin__isnull= True)
     print(gastos)
     return render(request, 'mis_gastos_unicos.html', {'gastos': gastos})
 
@@ -61,7 +62,8 @@ def filtrar_mis_gastos_rango_fecha_Recurrente(request):
     fecha_fin = request.GET.get('fecha_fin')
 
     # Filtrar los gastos por fecha
-    gastos = Gasto.objects.filter(usuario=request.user,  fecha__range=[fecha_inicio, fecha_fin],fechaFin__isnull= False)
+    gastos = Gasto.objects.filter(usuario=request.user, 
+                                  fecha__range=[fecha_inicio, fecha_fin],fechaFin__isnull= False)
     print(gastos)
     return render(request, 'mis_gastos_recurrentes.html', {'gastos': gastos})
 
@@ -73,11 +75,13 @@ def filtrar_mis_gastos_año_Recurrente(request):
     print( añoNum)
     errorfiltrarAño=''
     # Filtrar los gastos por fecha
-    gastos = Gasto.objects.filter(usuario=request.user,  fecha__year=añoNum,fechaFin__isnull= False)
+    gastos = Gasto.objects.filter(usuario=request.user,
+                                  fecha__year=añoNum,fechaFin__isnull= False)
     if not gastos.exists():
       errorfiltrarAño='No se encotraron resultados del año '+ año
     print(gastos)
-    return render(request, 'mis_gastos_recurrentes.html', {'gastos': gastos, 'errorfiltrarAño':errorfiltrarAño})
+    return render(request, 'mis_gastos_recurrentes.html'
+                  , {'gastos': gastos, 'errorfiltrarAño':errorfiltrarAño})
 
 
 
@@ -88,7 +92,8 @@ def filtrar_mis_gastos_mes_Recurrente(request):
     
     # Filtrar los gastos por fecha que caen dentro del mes seleccionado
     gastos = Gasto.objects.filter(
-        (Q(fecha__month__lte=mes_numero) & Q(fechaFin__month__gte=mes_numero)), usuario=request.user
+        (Q(fecha__month__lte=mes_numero) &
+         Q(fechaFin__month__gte=mes_numero)), usuario=request.user
     )
     
     print(gastos)
@@ -120,7 +125,8 @@ def new_gasto_unico(request):
         categoria = request.POST['categoria']
         fecha = request.POST['fecha']
          
-        gasto = Gasto(nombre=nombre, cantidad=cantidad, categoria=categoria, fecha=fecha, pagoUnico=True, usuario= request.user)
+        gasto = Gasto(nombre=nombre, cantidad=cantidad,
+                      categoria=categoria, fecha=fecha, pagoUnico=True, usuario= request.user)
         gasto.save()
         return redirect('gastos_unico')  
     else:
@@ -167,17 +173,13 @@ def editar_gasto_unico(request, gasto_id):
         cantidad = request.POST.get('cantidad')
         categoria = request.POST.get('categoria')
         fecha = request.POST.get('fecha')
-        
-        
         # Actualizar los atributos del gasto
         gasto.nombre = nombre
         gasto.cantidad = cantidad
         gasto.categoria = categoria
         gasto.fecha = fecha
-        
         # Guardar el gasto actualizado
         gasto.save()
-        
         return redirect('gastos_unico')  
     else:
         return render(request, 'editar_gasto.html', {'gasto': gasto})

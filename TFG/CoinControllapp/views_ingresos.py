@@ -185,7 +185,7 @@ def editar_ingreso_unico(request, ingreso_id):
         
         return redirect('ingreso_unico')  
     else:
-        return render(request, 'editar_ingreso.html', {'ingreso': ingreso})
+        return render(request, 'editar_ingreso_unico.html', {'ingreso': ingreso})
 
 
 @login_required

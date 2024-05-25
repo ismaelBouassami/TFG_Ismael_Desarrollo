@@ -74,7 +74,7 @@ def obtener_filtro_mes(request,mes,tipo):
         # Obtén los gastos del mes actual
         # Obtener todos los gastos para el mes actual
         gastos_mes_actual = Gasto.objects.filter(
-            (Q(fecha__month=mes_actual, fecha__year=año_actual) & Q(pagoUnico=False)) |  # Gastos no recurrentes del mes actual
+            (Q(fecha__month=mes_actual, fecha__year=año_actual)) |  # Gastos no recurrentes del mes actual
             (Q(fecha__month__lte=mes_actual, fechaFin__month__gte=mes_actual ))& (Q(fecha__year=año_actual) |(Q(fecha__year=año_actual, fecha__month=mes_actual)) ) # Gastos recurrentes que se superponen con el mes actual
         )
 
